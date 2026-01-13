@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Add User</title>
+</head>
+<body class="bg-blue-50 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-xl w-96">
+        <h2 class="text-2xl font-bold mb-6 text-center text-blue-600">New User</h2>
+        
+        <form id="userForm" class="space-y-4">
+            <input type="text" id="name" placeholder="Name" class="w-full border p-2 rounded" required>
+            <input type="text" id="surname" placeholder="Surname" class="w-full border p-2 rounded" required>
+            <input type="text" id="phone" placeholder="Phone" class="w-full border p-2 rounded" required>
+            <input type="email" id="email" placeholder="Email" class="w-full border p-2 rounded" required>
+            <input type="file" id="photo" class="w-full text-sm">
+            
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700">Save User</button>
+        </form>
+        
+        <a href="list.html" class="block text-center mt-4 text-sm text-gray-500 underline">View User List</a>
+    </div>
+
+    <script>
+        document.getElementById('userForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('name', document.getElementById('name').value);
+            formData.append('surname', document.getElementById('surname').value);
+            formData.append('phone', document.getElementById('phone').value);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('photo', document.getElementById('photo').files[0]);
+
+            const res = await fetch('http://localhost:5000/api/add', {
+                method: 'POST',
+                body: formData
+            });
+
+            if(res.ok) {
+                // Updated alert message
+                alert("User saved successfully!");
+                window.location.href = 'list.html'; 
+            }
+        };
+    </script>
+</body>
+</html>

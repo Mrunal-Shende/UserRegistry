@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>User List</title>
+</head>
+<body class="bg-gray-100 p-10">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8 text-center">All User</h2>
+        <div id="userGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            </div>
+        <div class="text-center mt-10">
+            <a href="index.html" class="bg-gray-800 text-white px-6 py-2 rounded">Back to Form</a>
+        </div>
+    </div>
+
+    <script>
+        async function fetchUsers() {
+            const response = await fetch('http://localhost:5000/api/users');
+            const users = await response.json();
+            const grid = document.getElementById('userGrid');
+
+            grid.innerHTML = users.map(user => `
+                <div class="bg-white p-5 rounded-lg shadow border-t-4 border-blue-500 text-center">
+                    <img src="http://localhost:5000/uploads/${user.photo}" 
+                         class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-gray-200"
+                         onerror="this.src='https://via.placeholder.com/150'">
+                    <h3 class="text-xl font-bold">${user.name} ${user.surname}</h3>
+                    <p class="text-gray-500">${user.email}</p>
+                    <p class="text-blue-600 font-semibold mt-2">${user.phone}</p>
+                </div>
+            `).join('');
+        }
+        fetchUsers();
+    </script>
+</body>
+</html>
